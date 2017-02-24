@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start ./bin/www --name='cosmetic'",
-    "dev": "supervisor ./bin/www",
-    "check": "pm2 start ./lib/check --name='cosmetic-check'"
+    "start": "pm2 start ecosystem.config.js",
+    "dev": "supervisor ./bin/www"
   },
   "dependencies": {
     "async": "^2.1.5",
