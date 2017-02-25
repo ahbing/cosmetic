@@ -6,5 +6,8 @@ block content
   ul
     each product in products
       li
-        a(href="#") #{product.productTitle + product.productId} &nbsp;&nbsp;| 
+        - let title = product.productTitle.split(' ').join('-');
+        - let brand = product.productBrand.split(' ').join('-');
+        - let link = `http://www.selfridges.com/HK/en/cat/${title}-${brand}_${product.wcid}`;
+        a(target ="_blank" href=link) #{product.productTitle} &nbsp;&nbsp;| 
         a(href="/delete/"+ product.productId) 删除
