@@ -14,6 +14,7 @@ block content
 
           form(action="/update", method="POST")
             input#productId(type="hidden", name="productId")
+            
             .form-group
               label.control-label(for="nickname") 昵称
               input#nickname.form-control(type="text", name="nickname")
@@ -25,6 +26,9 @@ block content
             .form-group
               label.control-label(for="threshold") 阈值
               input#threshold.form-control(type="text", name="threshold")
+            .form-group
+              input#status(type="checkbox", name="status")
+              label(for="status") 是否通知
             button.btn.btn-default(type="button", data-dismiss="modal") 取消
             button.btn.btn-primary(type="submit") 更新
 
@@ -35,9 +39,11 @@ block content
         th 昵称
         th 配色
         th 通知阈值
+        th 状态
         th 操作
     tbody
       each product in products
+
         tr
           - let title = product.productTitle.split(' ').join('-');
           - let brand = product.productBrand.split(' ').join('-');
@@ -45,6 +51,7 @@ block content
           - let colours = product.colours || [];
           - let threshold = product.threshold || 10;
           - let nickname = product.nickname || '';
+          - let status = product.status;
           td
             a(target ="_blank" href=link) #{product.productTitle}
           td.nickname #{nickname}
@@ -54,10 +61,11 @@ block content
               a(target ="_blank" href=colurLink class="colour") #{colour}
               span &nbsp;&nbsp;
           td.threshold #{threshold}
+          td.status #{ status ? '' : '暂停' }
           td
             a.btn.btn-default(href="/delete/"+ product.productId) 删除
             span &nbsp;&nbsp;
-            button.btn.btn-primary(data-productId=product.productId, data-toggle="modal" data-target="#myModal") 编辑
+            button.btn.btn-primary(data-productId=product.productId data-toggle="modal" data-target="#myModal") 编辑
   
 block append scripts
   script.
@@ -66,8 +74,10 @@ block append scripts
         var $button = $(event.relatedTarget)
         var $cloestTr = $button.closest('tr');
         var productId = $button.attr('data-productId');
+        var statusText = $cloestTr.find('.status').text();
         var nickname = $cloestTr.find('.nickname').text();
         var threshold = $cloestTr.find('.threshold').text();
+        var status = statusText ? false : true; // 没有消息就是好消息
         var tpl = [];
         $cloestTr.find('.colour').each(function(i) {
           tpl.push($(this).text());
@@ -80,5 +90,6 @@ block append scripts
         $modal.find('#colours').val(colours);
         $modal.find('#threshold').val(threshold);
         $modal.find('#productId').val(productId);
+        $modal.find('#status').prop('checked', status);
       })
     })(jQuery)

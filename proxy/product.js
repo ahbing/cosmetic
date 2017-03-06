@@ -41,7 +41,8 @@ exports.updateProductSetting = function(productId, updateInfos) {
     $set: {
       colours : updateInfos.colours,
       threshold : updateInfos.threshold,
-      nickname : updateInfos.nickname
+      nickname : updateInfos.nickname,
+      status : updateInfos.status
     }
   }, {
     overwrite: true

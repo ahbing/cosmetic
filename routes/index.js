@@ -44,7 +44,7 @@ router.get('/add/:productId/:storeId/:productBrand/:productTitle/:wcid', functio
       };
       const newProduct = productProxy.newAndSave(newProductObj);
       newProduct.then(function(product) {
-        console.log('添加成功', product);
+        console.log('添加成功', productId);
         return res.status(200).json({ product: product });
       }).catch(function(err) {
         console.error('添加失败', err);
@@ -60,7 +60,7 @@ router.get('/add/:productId/:storeId/:productBrand/:productTitle/:wcid', functio
 router.get('/delete/:productId', function(req, res, next) {
   const productId = req.params.productId;
   productProxy.removeProductById(productId).then(function(product) {
-    console.log('删除成功', product);
+    console.log('删除成功', productId);
     // return res.status(200).json({ product: product });
     res.redirect('/');
   }).catch(function(err) {
@@ -74,15 +74,16 @@ router.get('/delete/:productId', function(req, res, next) {
 // 更新
 router.post('/update', function(req, res, next) {
   const productId = req.body.productId;
-  let colours = req.body.colours.trim().split('#');
-
+  let colours = req.body.colours.trim();
+  colours = colours ? colours.split('#') : [];
   const updateInfos = {
     colours : colours,
     threshold : req.body.threshold,
-    nickname : req.body.nickname
+    nickname : req.body.nickname,
+    status: req.body.status
   };
   productProxy.updateProductSetting(productId, updateInfos).then(function(product) {
-    console.log('更新成功', product);
+    console.log('更新成功', productId);
     // return res.status(200).json({ product: product });
     res.redirect('/');
   }).catch(function(err) {
