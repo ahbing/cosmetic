@@ -61,10 +61,34 @@ router.get('/delete/:productId', function(req, res, next) {
   const productId = req.params.productId;
   productProxy.removeProductById(productId).then(function(product) {
     console.log('删除成功', product);
-    return res.status(200).json({ product: product });
+    // return res.status(200).json({ product: product });
+    res.redirect('/');
   }).catch(function(err) {
     console.error('删除失败', err);
-    return res.status(500).json({ message: '删除商品失败', error: err });
+    // return res.status(500).json({ message: '删除商品失败', error: err });
+    res.redirect('/');
+  })
+});
+
+
+// 更新
+router.post('/update', function(req, res, next) {
+  const productId = req.body.productId;
+  let colours = req.body.colours.trim().split('#');
+
+  const updateInfos = {
+    colours : colours,
+    threshold : req.body.threshold,
+    nickname : req.body.nickname
+  };
+  productProxy.updateProductSetting(productId, updateInfos).then(function(product) {
+    console.log('更新成功', product);
+    // return res.status(200).json({ product: product });
+    res.redirect('/');
+  }).catch(function(err) {
+    console.error('更新失败', err);
+    // return res.status(500).json({ message: '更新商品失败', error: err });
+    res.redirect('/');
   })
 });
 

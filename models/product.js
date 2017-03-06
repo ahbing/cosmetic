@@ -11,8 +11,10 @@ const ProductSchema = new Schema({
   productBrand: { type: String },
   productTitle: { type: String },
   wcid: { type: String }, //再组装 stocks 中的 value => url ?previewAttribute=Spanish+pink
-  stocks: [{}]
-  
+  stocks: [{}],
+  colours: { type: Array, default: [] },
+  nickname: { type: String, default: '' },
+  threshold: { type: Number, default: 10 } // 从无到有超过多少值才通知
 }, { autoIndex: false });
 
 const Product = mongoose.model('Product', ProductSchema);

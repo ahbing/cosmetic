@@ -3,11 +3,82 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  ul
-    each product in products
-      li
-        - let title = product.productTitle.split(' ').join('-');
-        - let brand = product.productBrand.split(' ').join('-');
-        - let link = `http://www.selfridges.com/HK/en/cat/${title}-${brand}_${product.wcid}`;
-        a(target ="_blank" href=link) #{product.productTitle} &nbsp;&nbsp;| 
-        a(href="/delete/"+ product.productId) 删除
+  #myModal.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close(type="button" data-dismiss="modal")
+            span &times;
+          .modal-title 修改商品信息
+        .modal-body
+
+          form(action="/update", method="POST")
+            input#productId(type="hidden", name="productId")
+            .form-group
+              label.control-label(for="nickname") 昵称
+              input#nickname.form-control(type="text", name="nickname")
+            
+            .form-group
+              label.control-label(for="colours") 款式，不同值之间请用 # 分割，如 red#blue#green 
+              input#colours.form-control(type="text", name="colours")
+              
+            .form-group
+              label.control-label(for="threshold") 阈值
+              input#threshold.form-control(type="text", name="threshold")
+            button.btn.btn-default(type="button", data-dismiss="modal") 取消
+            button.btn.btn-primary(type="submit") 更新
+
+  table.table.table-striped
+    thead
+      tr
+        th 商品
+        th 昵称
+        th 配色
+        th 通知阈值
+        th 操作
+    tbody
+      each product in products
+        tr
+          - let title = product.productTitle.split(' ').join('-');
+          - let brand = product.productBrand.split(' ').join('-');
+          - let link = `http://www.selfridges.com/HK/en/cat/${title}-${brand}_${product.wcid}`;
+          - let colours = product.colours || [];
+          - let threshold = product.threshold || 10;
+          - let nickname = product.nickname || '';
+          td
+            a(target ="_blank" href=link) #{product.productTitle}
+          td.nickname #{nickname}
+          td
+            each colour in colours
+              - let colurLink = `${link}?previewAttribute=${colour}`
+              a(target ="_blank" href=colurLink class="colour") #{colour}
+              span &nbsp;&nbsp;
+          td.threshold #{threshold}
+          td
+            a.btn.btn-default(href="/delete/"+ product.productId) 删除
+            span &nbsp;&nbsp;
+            button.btn.btn-primary(data-productId=product.productId, data-toggle="modal" data-target="#myModal") 编辑
+  
+block append scripts
+  script.
+    (function($) {
+      $('#myModal').on('show.bs.modal', function (event) {
+        var $button = $(event.relatedTarget)
+        var $cloestTr = $button.closest('tr');
+        var productId = $button.attr('data-productId');
+        var nickname = $cloestTr.find('.nickname').text();
+        var threshold = $cloestTr.find('.threshold').text();
+        var tpl = [];
+        $cloestTr.find('.colour').each(function(i) {
+          tpl.push($(this).text());
+        });
+
+        var colours = tpl.join('#');
+
+        var $modal = $(this);
+        $modal.find('#nickname').val(nickname);
+        $modal.find('#colours').val(colours);
+        $modal.find('#threshold').val(threshold);
+        $modal.find('#productId').val(productId);
+      })
+    })(jQuery)

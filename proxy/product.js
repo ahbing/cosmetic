@@ -34,6 +34,20 @@ exports.updateProductStocks = function(productId, newStocks) {
   }).exec();
 }
 
+// 更新商品设置信息
+
+exports.updateProductSetting = function(productId, updateInfos) {
+  return Product.findOneAndUpdate({productId: productId}, {
+    $set: {
+      colours : updateInfos.colours,
+      threshold : updateInfos.threshold,
+      nickname : updateInfos.nickname
+    }
+  }, {
+    overwrite: true
+  }).exec();
+}
+
 exports.getProductByProductId = function(productId) {
   return Product.findOne({ productId: productId }).exec();
 }
