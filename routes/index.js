@@ -8,7 +8,6 @@ const getRemoteData = require('../lib/remote.js').getRemoteData;
 /* GET home page. */
 router.get('/', function(req, res, next) {
   productProxy.getAllProducts().then(function(products) {
-    console.log('products', products);
     res.render('index', {title: 'cosmetic', products: products});
   });
 });
@@ -25,10 +24,9 @@ router.get('/add/:productId/:storeId/:productBrand/:productTitle/:wcid', functio
   const url = `http://www.selfridges.com/HK/en/webapp/wcs/stores/servlet/AjaxStockStatusView?productId=${productId}&storeId=${storeId}`;
   
   productProxy.getProductByProductId(productId).then(function(product) {
-    console.log('product', product);
     if (product) {
       // 商品已经关注
-      console.log('商品已经关注', product);
+      console.log('商品已经关注', productId);
       return res.status(304).json({ product: product });
     }
     // 获取远端库存数据
@@ -78,7 +76,7 @@ router.post('/update', function(req, res, next) {
   colours = colours ? colours.split('#') : [];
   const updateInfos = {
     colours : colours,
-    threshold : req.body.threshold,
+    threshold : +req.body.threshold,  // 转化成数字
     nickname : req.body.nickname,
     status: req.body.status
   };

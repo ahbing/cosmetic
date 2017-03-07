@@ -57,9 +57,9 @@ block content
           td.nickname #{nickname}
           td
             each colour in colours
-              - let colurLink = `${link}?previewAttribute=${colour}`
+              - let colurLink = `${link}?previewAttribute=${colour.split(' ').join('+')}`;
               a(target ="_blank" href=colurLink class="colour") #{colour}
-              span &nbsp;&nbsp;
+              span &nbsp;|&nbsp;
           td.threshold #{threshold}
           td.status #{ status ? '' : '暂停' }
           td
