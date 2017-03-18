@@ -36,6 +36,7 @@ block content
     thead
       tr
         th 商品
+        th 商品Id
         th 昵称
         th 配色
         th 通知阈值
@@ -54,6 +55,7 @@ block content
           - let status = product.status;
           td
             a(target ="_blank" href=link) #{product.productTitle}
+          td #{product.productId}
           td.nickname #{nickname}
           td
             each colour in colours
