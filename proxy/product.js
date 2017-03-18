@@ -26,10 +26,11 @@ exports.updateProductTime = function(id) {
 /**
  * @param newStocks []
  */
-exports.updateProductStocks = function(productId, newStocks) {
+exports.updateProductStocks = function(productId, newStocks, updateTime) {
   return Product.findOneAndUpdate({productId: productId}, {
     $set: {
-      stocks: newStocks
+      stocks: newStocks,
+      updateTime: updateTime
     }
   }).exec();
 }
