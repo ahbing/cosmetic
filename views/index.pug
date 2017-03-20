@@ -63,9 +63,10 @@ block content
           td
             each colour in colours
               - let colurLink = `${link}?previewAttribute=${colour.split(' ').join('+')}`;
-              - let stocksNum = stocks.filter( item => item.value == colour)
+              - let stocksNum = stocks.filter( item => item.value == colour) || [];
               a(target ="_blank" href=colurLink class="colour") #{colour}
-              span :#{stocksNum[0]['qty']}
+              if stocksNum[0] && stocksNum[0]['qty']
+                span :#{stocksNum[0]['qty']}
               span &nbsp;|&nbsp;    
           td #{updateTime.toLocaleString()}
           td.threshold #{threshold}
