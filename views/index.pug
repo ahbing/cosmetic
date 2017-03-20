@@ -38,7 +38,8 @@ block content
         th 商品
         th 商品Id
         th 昵称
-        th 配色
+        th 配色及库存量
+        th 更新时间
         th 通知阈值
         th 状态
         th 操作
@@ -53,6 +54,8 @@ block content
           - let threshold = product.threshold || 10;
           - let nickname = product.nickname || '';
           - let status = product.status;
+          - let stocks = product.stocks;
+          - let updateTime = product.updateTime;
           td
             a(target ="_blank" href=link) #{product.productTitle}
           td #{product.productId}
@@ -60,8 +63,11 @@ block content
           td
             each colour in colours
               - let colurLink = `${link}?previewAttribute=${colour.split(' ').join('+')}`;
+              - let stocksNum = stocks.filter( item => item.value == colour)
               a(target ="_blank" href=colurLink class="colour") #{colour}
-              span &nbsp;|&nbsp;
+              span :#{stocksNum[0]['qty']}
+              span &nbsp;|&nbsp;    
+          td #{updateTime.toLocaleString()}
           td.threshold #{threshold}
           td.status #{ status ? '' : '暂停' }
           td
