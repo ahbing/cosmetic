@@ -61,6 +61,9 @@ block content
           td #{product.productId}
           td.nickname #{nickname}
           td
+            if stocks.length === 1
+              a(target ="_blank" href=link class="colour") #{colour}
+              span 单商品库存：#{stocks[0]['qty']}
             each colour in colours
               - let colurLink = `${link}?previewAttribute=${colour.split(' ').join('+')}`;
               - let stocksNum = stocks.filter( item => item.value == colour) || [];
