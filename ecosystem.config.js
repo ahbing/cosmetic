@@ -25,6 +25,14 @@ module.exports = {
       script    : "./lib/check.js",
       watch : true,
       ignore_watch: ["node_modules"]
+    },
+
+    // Third application
+    {
+      name      : "check-newest",
+      script    : "./lib/newest.js",
+      watch : true,
+      ignore_watch: ["node_modules"]
     }
   ]
 }
