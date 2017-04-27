@@ -1,0 +1,25 @@
+extends layout
+
+block content
+
+  form(action="/label/add", method="POST")
+    .form-group.row
+      .col-lg-4
+        label.control-label(for="labelName") 添加新标签
+        input.col-lg-6.form-control(type="text", name="labelName")
+    button.btn.btn-primary(type="submit") 添加
+  br
+  h4 已经存在的标签
+  table.table.table-striped
+    thead
+      tr
+        th 名称
+        th 操作
+    tbody
+      each label in labels
+        tr
+          td #{label.labelName}
+          td.col-lg-1.col-sm-1
+            a.btn.btn-default(href="/label/delete/"+ label._id) 删除
+      
+        

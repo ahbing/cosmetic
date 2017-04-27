@@ -43,7 +43,8 @@ exports.updateProductSetting = function(productId, updateInfos) {
       colours : updateInfos.colours,
       threshold : updateInfos.threshold,
       nickname : updateInfos.nickname,
-      status : updateInfos.status
+      status : updateInfos.status,
+      labelName: updateInfos.labelName
     }
   }, {
     overwrite: true
@@ -54,6 +55,6 @@ exports.getProductByProductId = function(productId) {
   return Product.findOne({ productId: productId }).exec();
 }
 
-exports.getAllProducts = function() {
-  return Product.find().exec();
+exports.getAllProducts = function(query) {
+  return Product.find(query).exec();
 }

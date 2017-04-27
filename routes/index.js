@@ -3,12 +3,21 @@ const express = require('express');
 const router = express.Router();
 
 const productProxy = require('../proxy/product.js');
+const labelProxy = require('../proxy/label.js');
 const getRemoteData = require('../lib/remote.js').getRemoteData;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  productProxy.getAllProducts().then(function(products) {
-    res.render('index', {title: 'cosmetic', products: products});
+  let labelName = req.query.label;
+  labelName = labelName && labelName.trim();
+  let query = {};
+  if (labelName || labelName === '') {
+    query = { labelName: labelName }
+  }
+  productProxy.getAllProducts(query).then(function(products) {
+    labelProxy.getAllLabels().then(function(labels) {
+      res.render('index', { products: products, labels: labels, labelName: labelName });  
+    })
   });
 });
 
@@ -78,7 +87,8 @@ router.post('/update', function(req, res, next) {
     colours : colours,
     threshold : +req.body.threshold,  // 转化成数字
     nickname : req.body.nickname,
-    status: req.body.status
+    status: req.body.status,
+    labelName: req.body.labelName
   };
   productProxy.updateProductSetting(productId, updateInfos).then(function(product) {
     console.log('更新成功', productId);

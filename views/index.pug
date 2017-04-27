@@ -1,8 +1,20 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  ul.nav.nav-pills
+    - allBtnClass = labelName == undefined ? 'active' : '';
+      li(class = allBtnClass)
+        a(href='/') 全部
+    - unBtnClass = labelName == '' ? 'active' : '';
+      li(class = unBtnClass)
+        a(href='/?label') 未定义
+    each label in labels
+      - myLabelName = label.labelName
+      - link = "/?label=" + myLabelName
+      - liBtnClass = myLabelName == labelName ? 'active' : ''
+        li(class=liBtnClass)
+          a(href=link) #{myLabelName}
+        
   #myModal.modal.fade
     .modal-dialog
       .modal-content
@@ -27,6 +39,12 @@ block content
               label.control-label(for="threshold") 阈值
               input#threshold.form-control(type="text", name="threshold")
             .form-group
+              label 添加标签
+                select#labelName.form-control(name="labelName")
+                  option
+                  each label in labels
+                    option #{label.labelName}
+            .form-group
               input#status(type="checkbox", name="status")
               label(for="status") 是否通知
             button.btn.btn-default(type="button", data-dismiss="modal") 取消
@@ -39,7 +57,8 @@ block content
         th 商品Id
         th 昵称
         th 配色及库存量
-        th 更新时间
+        //- th 更新时间
+        th 标签
         th 通知阈值
         th 状态
         th 操作
@@ -56,6 +75,7 @@ block content
           - let status = product.status;
           - let stocks = product.stocks;
           - let updateTime = product.updateTime;
+          - let labelName = product.labelName || '未定义';
           td
             a(target ="_blank" href=link) #{product.productTitle}
           td #{product.productId}
@@ -70,8 +90,9 @@ block content
               a(target ="_blank" href=colurLink class="colour") #{colour}
               if stocksNum[0] && stocksNum[0]['qty']
                 span :#{stocksNum[0]['qty']}
-              span &nbsp;|&nbsp;    
-          td #{updateTime.toLocaleString()}
+              span &nbsp;|&nbsp;
+          //- td #{updateTime.toLocaleString()}
+          td.labelName #{labelName}
           td.threshold #{threshold}
           td.status #{ status ? '' : '暂停' }
           td
@@ -87,6 +108,7 @@ block append scripts
         var $cloestTr = $button.closest('tr');
         var productId = $button.attr('data-productId');
         var statusText = $cloestTr.find('.status').text();
+        var labelName = $cloestTr.find('.labelName').text();
         var nickname = $cloestTr.find('.nickname').text();
         var threshold = $cloestTr.find('.threshold').text();
         var status = statusText ? false : true; // 没有消息就是好消息
@@ -100,6 +122,7 @@ block append scripts
         var $modal = $(this);
         $modal.find('#nickname').val(nickname);
         $modal.find('#colours').val(colours);
+        $modal.find('#labelName').val(labelName);
         $modal.find('#threshold').val(threshold);
         $modal.find('#productId').val(productId);
         $modal.find('#status').prop('checked', status);

@@ -10,3 +10,4 @@ mongoose.connect(config.db, function(err) {
 });
 
 exports.Product = require('./product');
+exports.Label = require('./label');

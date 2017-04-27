@@ -5,6 +5,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const ProductSchema = new Schema({
   productId: { type: String },
+  labelName: { type: String, default: '', index: true},
   storeId: { type: String },
   status: { type: Boolean, default: true }, // 是否关注
   updateTime: { type: Date, default: Date.now }, // 更新时间
