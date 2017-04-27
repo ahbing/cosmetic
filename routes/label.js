@@ -27,7 +27,7 @@ router.get('/delete/:labelId', function(req, res, next) {
 
 
 router.post('/add', function(req, res, next) {
-  const labelName = req.body.labelName;
+  let labelName = req.body.labelName;
   labelName = labelName && labelName.trim();
   if (!labelName) return res.redirect('/label');
   labelProxy.getLabelByName(labelName).then(function(label) {
