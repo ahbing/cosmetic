@@ -5,11 +5,22 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
+
+var requireLogin = require('./lib/middleware/auth').requireLogin;
+
 var index = require('./routes/index');
 var label = require('./routes/label');
+var auth = require('./routes/auth');
+
+
+
+var config = require('./config');
 
 var app = express();
 
+var redisClient = require('redis').createClient(config.redis.port, config.redis.host);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -22,8 +33,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/label', label);
+app.use(session({
+  store: new RedisStore({ client: redisClient, ttl: 3 * 24 * 60 * 60 }),
+  secret: config.session_keys,
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use('/auth', auth);
+app.use('/',requireLogin, index);
+app.use('/label',requireLogin, label);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

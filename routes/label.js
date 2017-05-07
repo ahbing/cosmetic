@@ -8,7 +8,7 @@ const labelProxy = require('../proxy/label');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   labelProxy.getAllLabels().then(function(labels) {
-    res.render('label', {title: 'cosmetic-label', labels: labels});
+    res.render('label', {title: 'cosmetic-label', labels: labels, login:true});
   });
 });
 

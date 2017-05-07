@@ -5,7 +5,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const ProductSchema = new Schema({
   productId: { type: String },
-  labelName: { type: String, default: '', index: true},
+  labelName: { type: String, default: '', index: true}, // labelName 为 deleted 即删除
   storeId: { type: String },
   status: { type: Boolean, default: true }, // 是否关注
   updateTime: { type: Date, default: Date.now }, // 更新时间
@@ -15,7 +15,7 @@ const ProductSchema = new Schema({
   stocks: [{}],
   colours: { type: Array, default: [] },
   nickname: { type: String, default: '' },
-  threshold: { type: Number, default: 10 } // 从无到有超过多少值才通知
+  threshold: { type: Number, default: 10 }, // 从无到有超过多少值才通知
 }, { autoIndex: false });
 
 const Product = mongoose.model('Product', ProductSchema);

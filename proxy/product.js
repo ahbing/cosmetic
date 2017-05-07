@@ -13,6 +13,17 @@ exports.removeProductById = function(productId, obj) {
   return Product.findOneAndRemove({productId: productId}).exec();
 }
 
+exports.deleteProductById = function(productId, obj) {
+  return Product.findOneAndUpdate({productId: productId}, {
+    $set: {
+      status: false,
+      labelName: 'deleted'
+    }
+  }, {
+    overwrite: true
+  }).exec();
+}
+
 // 更新产品最后更新时间
 exports.updateProductTime = function(id) {
   return Product.findOneAndUpdate(id, {

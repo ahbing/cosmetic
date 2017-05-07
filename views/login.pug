@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  if error
+    p #{error}
+  else
+    p 他强由他强，清风拂山岗。
+    p 他横由他横，明月照大江。
+    //- p ---- 你是谁？为毛要删老子数据！！！艹你妈的
+  form(action="/auth/login", method="POST")
+
+    .form-group.row
+      .col-lg-4
+        label.control-label 用户名
+        input.col-lg-6.form-control(type="text", name="username")
+    .form-group.row
+      .col-lg-4
+        label.control-label 密码
+        input.col-lg-6.form-control(type="password", name="password")
+    button.btn.btn-primary(type="submit") 登录

@@ -8,5 +8,14 @@ module.exports = {
     success: ['<YOUR MAIL>'],
     error: ['<YOUR MAIL>']
   },
-  domain: '<YOUR DOMAIN>'
+  domain: '<YOUR DOMAIN>',
+  redis: {
+    host: "",
+    port: 0000
+  },
+  session_keys: ["", ""],
+  admin: {
+    username: '',
+    password: ''
+  }
 };

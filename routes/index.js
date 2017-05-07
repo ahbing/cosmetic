@@ -16,7 +16,12 @@ router.get('/', function(req, res, next) {
   }
   productProxy.getAllProducts(query).then(function(products) {
     labelProxy.getAllLabels().then(function(labels) {
-      res.render('index', { products: products, labels: labels, labelName: labelName });  
+      if (labelName === '' || !labelName) { // 被删除的商品查询
+        products = products.filter(function(item) {
+          return item.labelName !== 'deleted'
+        });
+      }
+      res.render('index', { products: products, labels: labels, labelName: labelName, login: true});  
     })
   });
 });
@@ -66,7 +71,7 @@ router.get('/add/:productId/:storeId/:productBrand/:productTitle/:wcid', functio
 // 删除关注
 router.get('/delete/:productId', function(req, res, next) {
   const productId = req.params.productId;
-  productProxy.removeProductById(productId).then(function(product) {
+  productProxy.deleteProductById(productId).then(function(product) {
     console.log('删除成功', productId);
     // return res.status(200).json({ product: product });
     res.redirect('/');

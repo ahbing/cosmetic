@@ -47,8 +47,13 @@ block content
             .form-group
               input#status(type="checkbox", name="status")
               label(for="status") 是否通知
+            
+            a.btn.btn-danger#deleteBtn(href="") 删除
+            span &nbsp;&nbsp;
             button.btn.btn-default(type="button", data-dismiss="modal") 取消
+            span &nbsp;&nbsp;
             button.btn.btn-primary(type="submit") 更新
+            
 
   table.table.table-striped
     thead
@@ -96,8 +101,8 @@ block content
           td.threshold #{threshold}
           td.status #{ status ? '' : '暂停' }
           td
-            a.btn.btn-default(href="/delete/"+ product.productId) 删除
-            span &nbsp;&nbsp;
+            //- a.btn.btn-default(href="/delete/"+ product.productId) 删除
+            //- span &nbsp;&nbsp;
             button.btn.btn-primary(data-productId=product.productId data-toggle="modal" data-target="#myModal") 编辑
   
 block append scripts
@@ -126,5 +131,7 @@ block append scripts
         $modal.find('#threshold').val(threshold);
         $modal.find('#productId').val(productId);
         $modal.find('#status').prop('checked', status);
+        var deleteUrl = '/delete/' + productId;
+        $modal.find('#deleteBtn').attr('href', deleteUrl);
       })
     })(jQuery)
