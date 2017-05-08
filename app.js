@@ -41,8 +41,8 @@ app.use(session({
 }));
 
 app.use('/auth', auth);
-app.use('/',requireLogin, index);
-app.use('/label',requireLogin, label);
+app.use('/', index);
+app.use('/label', requireLogin, label);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

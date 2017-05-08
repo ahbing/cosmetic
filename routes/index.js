@@ -5,9 +5,10 @@ const router = express.Router();
 const productProxy = require('../proxy/product.js');
 const labelProxy = require('../proxy/label.js');
 const getRemoteData = require('../lib/remote.js').getRemoteData;
+const requireLogin = require('../lib/middleware/auth').requireLogin;
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', requireLogin, function(req, res, next) {
   let labelName = req.query.label;
   labelName = labelName && labelName.trim();
   let query = {};
@@ -69,7 +70,7 @@ router.get('/add/:productId/:storeId/:productBrand/:productTitle/:wcid', functio
 });
 
 // 删除关注
-router.get('/delete/:productId', function(req, res, next) {
+router.get('/delete/:productId', requireLogin, function(req, res, next) {
   const productId = req.params.productId;
   productProxy.deleteProductById(productId).then(function(product) {
     console.log('删除成功', productId);
@@ -84,7 +85,7 @@ router.get('/delete/:productId', function(req, res, next) {
 
 
 // 更新
-router.post('/update', function(req, res, next) {
+router.post('/update', requireLogin, function(req, res, next) {
   const productId = req.body.productId;
   let colours = req.body.colours.trim();
   colours = colours ? colours.split('#') : [];
