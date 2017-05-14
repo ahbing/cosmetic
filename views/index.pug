@@ -35,9 +35,9 @@ block content
               label.control-label(for="colours") 款式，不同值之间请用 # 分割，如 red#blue#green 
               input#colours.form-control(type="text", name="colours")
               
-            .form-group
-              label.control-label(for="threshold") 阈值
-              input#threshold.form-control(type="text", name="threshold")
+            //- .form-group
+            //-   label.control-label(for="threshold") 阈值
+            //-   input#threshold.form-control(type="text", name="threshold")
             .form-group
               label 添加标签
                 select#labelName.form-control(name="labelName")
@@ -64,7 +64,7 @@ block content
         th 配色及库存量
         //- th 更新时间
         th 标签
-        th 通知阈值
+        //- th 通知阈值
         th 状态
         th 操作
     tbody
@@ -73,9 +73,9 @@ block content
         tr
           - let title = product.productTitle.split(' ').join('-');
           - let brand = product.productBrand.split(' ').join('-');
-          - let link = `http://www.selfridges.com/HK/en/cat/${title}-${brand}_${product.wcid}`;
+          - let link = `http://www.selfridges.com/CN/en/cat/${title}-${brand}_${product.wcid}`;
           - let colours = product.colours || [];
-          - let threshold = product.threshold || 10;
+          //- - let threshold = product.threshold || 10;
           - let nickname = product.nickname || '';
           - let status = product.status;
           - let stocks = product.stocks;
@@ -98,7 +98,7 @@ block content
               span &nbsp;|&nbsp;
           //- td #{updateTime.toLocaleString()}
           td.labelName #{labelName}
-          td.threshold #{threshold}
+          //- td.threshold #{threshold}
           td.status #{ status ? '' : '暂停' }
           td
             //- a.btn.btn-default(href="/delete/"+ product.productId) 删除
@@ -115,7 +115,7 @@ block append scripts
         var statusText = $cloestTr.find('.status').text();
         var labelName = $cloestTr.find('.labelName').text();
         var nickname = $cloestTr.find('.nickname').text();
-        var threshold = $cloestTr.find('.threshold').text();
+        //- var threshold = $cloestTr.find('.threshold').text();
         var status = statusText ? false : true; // 没有消息就是好消息
         var tpl = [];
         $cloestTr.find('.colour').each(function(i) {
@@ -128,7 +128,7 @@ block append scripts
         $modal.find('#nickname').val(nickname);
         $modal.find('#colours').val(colours);
         $modal.find('#labelName').val(labelName);
-        $modal.find('#threshold').val(threshold);
+        //- $modal.find('#threshold').val(threshold);
         $modal.find('#productId').val(productId);
         $modal.find('#status').prop('checked', status);
         var deleteUrl = '/delete/' + productId;

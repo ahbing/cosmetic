@@ -52,7 +52,7 @@ exports.updateProductSetting = function(productId, updateInfos) {
   return Product.findOneAndUpdate({productId: productId}, {
     $set: {
       colours : updateInfos.colours,
-      threshold : updateInfos.threshold,
+      // threshold : updateInfos.threshold,
       nickname : updateInfos.nickname,
       status : updateInfos.status,
       labelName: updateInfos.labelName

@@ -91,7 +91,7 @@ router.post('/update', requireLogin, function(req, res, next) {
   colours = colours ? colours.split('#') : [];
   const updateInfos = {
     colours : colours,
-    threshold : +req.body.threshold,  // 转化成数字
+    // threshold : +req.body.threshold,  // 转化成数字
     nickname : req.body.nickname,
     status: req.body.status,
     labelName: req.body.labelName
