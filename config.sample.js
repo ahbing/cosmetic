@@ -14,8 +14,16 @@ module.exports = {
     port: 0000
   },
   session_keys: ["", ""],
-  admin: {
-    username: '',
-    password: ''
-  }
+  admin: [
+    {
+      username: '',
+      password: '',
+      root: false
+    },
+    {
+      username: '',
+      password: '',
+      root: ture
+    }
+  ]
 };

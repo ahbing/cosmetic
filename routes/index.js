@@ -6,10 +6,12 @@ const productProxy = require('../proxy/product.js');
 const labelProxy = require('../proxy/label.js');
 const getRemoteData = require('../lib/remote.js').getRemoteData;
 const requireLogin = require('../lib/middleware/auth').requireLogin;
+const requireRootLogin = require('../lib/middleware/auth').requireRootLogin;
 
 /* GET home page. */
 router.get('/', requireLogin, function(req, res, next) {
   let labelName = req.query.label;
+  let user = req.session.user;
   labelName = labelName && labelName.trim();
   let query = {};
   if (labelName || labelName === '') {
@@ -22,7 +24,7 @@ router.get('/', requireLogin, function(req, res, next) {
           return item.labelName !== 'deleted'
         });
       }
-      res.render('index', { products: products, labels: labels, labelName: labelName, login: true});  
+      res.render('index', { products: products, labels: labels, labelName: labelName, user: user});  
     })
   });
 });
@@ -70,7 +72,7 @@ router.get('/add/:productId/:storeId/:productBrand/:productTitle/:wcid', functio
 });
 
 // 删除关注
-router.get('/delete/:productId', requireLogin, function(req, res, next) {
+router.get('/delete/:productId', requireRootLogin, function(req, res, next) {
   const productId = req.params.productId;
   productProxy.deleteProductById(productId).then(function(product) {
     console.log('删除成功', productId);
@@ -85,7 +87,7 @@ router.get('/delete/:productId', requireLogin, function(req, res, next) {
 
 
 // 更新
-router.post('/update', requireLogin, function(req, res, next) {
+router.post('/update', requireRootLogin, function(req, res, next) {
   const productId = req.body.productId;
   let colours = req.body.colours.trim();
   colours = colours ? colours.split('#') : [];

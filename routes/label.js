@@ -3,16 +3,18 @@ const express = require('express');
 const router = express.Router();
 
 const labelProxy = require('../proxy/label');
+const requireRootLogin = require('../lib/middleware/auth').requireRootLogin;
 // const getRemoteData = require('../lib/remote.js').getRemoteData;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  let user = req.session.user;
   labelProxy.getAllLabels().then(function(labels) {
-    res.render('label', {title: 'cosmetic-label', labels: labels, login:true});
+    res.render('label', {title: 'cosmetic-label', labels: labels, user:user});
   });
 });
 
-router.get('/delete/:labelId', function(req, res, next) {
+router.get('/delete/:labelId', requireRootLogin, function(req, res, next) {
   const labelId = req.params.labelId;
   labelProxy.removeLabelById(labelId).then(function(label) {
     console.log('删除成功', labelId);
@@ -26,7 +28,7 @@ router.get('/delete/:labelId', function(req, res, next) {
 })
 
 
-router.post('/add', function(req, res, next) {
+router.post('/add', requireRootLogin, function(req, res, next) {
   let labelName = req.body.labelName;
   labelName = labelName && labelName.trim();
   if (!labelName) return res.redirect('/label');

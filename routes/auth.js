@@ -21,10 +21,18 @@ router.get('/logout', function(req, res, next) {
 router.post('/login', function(req, res, next) {
   var username = req.body.username;
   var password = req.body.password;
-  if (username === admin.username && password === admin.password) {
+  var currentAdmin = null;
+  admin.forEach(function(item, index) {
+    if (username === item.username ) {
+      currentAdmin = admin[index];
+    }
+  });
+  if (currentAdmin && password === currentAdmin.password) {
+    var root = currentAdmin.root;
     req.session.user = {
       username: username,
-      password: password
+      password: password,
+      root: root
     };
     res.redirect('/')
   } else {
