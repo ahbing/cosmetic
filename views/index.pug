@@ -59,7 +59,7 @@ block content
     thead
       tr
         th 商品
-        th 商品Id
+        //- th 商品Id
         th 昵称
         th 配色及库存量
         //- th 更新时间
@@ -84,7 +84,7 @@ block content
           - let labelName = product.labelName || '未定义';
           td
             a(target ="_blank" href=link) #{product.productTitle}
-          td #{product.productId}
+          //- td #{product.productId}
           td.nickname #{nickname}
           td
             if stocks.length === 1
