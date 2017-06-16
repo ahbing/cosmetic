@@ -66,7 +66,9 @@ exports.getProductByProductId = function(productId) {
   return Product.findOne({ productId: productId }).exec();
 }
 
-
+exports.getAllProducts = function(query) {
+  return Product.find(query).exec();
+}
 
 /**
  *  getProducts 根据更新时间排序，
