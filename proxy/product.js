@@ -66,6 +66,29 @@ exports.getProductByProductId = function(productId) {
   return Product.findOne({ productId: productId }).exec();
 }
 
-exports.getAllProducts = function(query) {
-  return Product.find(query).exec();
+
+
+/**
+ *  getProducts 根据更新时间排序，
+ *  然后从第 skip 开始取 limit 个 mail
+ *  @param { Number }  page 第几页
+ *  @param { Number }  limit 每页的数量
+ *  @param { Object }  查询条件，如 status
+ *  @param { Function } 回调函数
+ *  - err
+ *  - commodities { Array }
+ */
+exports.getProducts = function(page, per_page, query) {
+  let skip = (page-1) * per_page;
+  return Product.find(query)
+    .sort({
+      updateTime: -1
+    })
+    .skip(skip)
+    .limit(per_page)
+    .exec();
+}
+
+exports.getProductsCount = function(query) {
+  return Product.count(query).exec();
 }

@@ -1,5 +1,5 @@
 extends layout
-
+include ./mixins/pagination
 block content
   ul.nav.nav-pills
     - allBtnClass = labelName == undefined ? 'active' : '';
@@ -106,7 +106,7 @@ block content
               //- a.btn.btn-default(href="/delete/"+ product.productId) 删除
               //- span &nbsp;&nbsp;
               button.btn.btn-primary(data-productId=product.productId data-toggle="modal" data-target="#myModal") 编辑
-  
+  +pagination(pagination.page, pagination.per_page, pagination.total)
 block append scripts
   script.
     (function($) {

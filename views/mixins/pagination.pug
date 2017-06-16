@@ -1,0 +1,32 @@
+mixin pagination(page, per_page, total)
+  - var total_pages = Math.ceil(total / per_page);
+  if total_pages > 1
+    nav
+      ul.pagination
+        - for (var i = 1; i <= total_pages; i++)
+          li(class=`${page == i ? 'active' : ''}`): a(href=`/?page=${i}&per_page=${per_page}`, data-page=`${i}`, data-per_page=`${per_page}`) #{ i }
+
+  
+block append scripts
+  script.
+    (function($) {
+      var hadQuery = false;
+      var query = location.search;
+      if (query.indexOf('?label') !== -1) {
+        hadQuery = true;
+      }
+
+      query = query.split('&')[0];  //["?label=YSL", "page=2", "per_page=20"]
+
+      $('.pagination').find('li a').each(function(index) {
+        $this = $(this);
+        var page = $this.attr('data-page');
+        var per_page = $this.attr('data-per_page');
+        var pageQuery = '&page='+page+'&per_page='+per_page;
+        if (hadQuery) {
+          $this.attr('href', query+pageQuery);
+        }
+      });
+
+      
+    })(jQuery)
