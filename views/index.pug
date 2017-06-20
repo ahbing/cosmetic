@@ -62,7 +62,7 @@ block content
         th 商品Id
         th 昵称
         th 配色及库存量
-        //- th 更新时间
+        th 更新时间
         th 标签
         //- th 通知阈值
         th 状态
@@ -97,7 +97,7 @@ block content
               if stocksNum[0] && stocksNum[0]['qty']
                 span :#{stocksNum[0]['qty']}
               span &nbsp;|&nbsp;
-          //- td #{updateTime.toLocaleString()}
+          td #{updateTime.toLocaleString()}
           td.labelName #{labelName}
           //- td.threshold #{threshold}
           td.status #{ status ? '' : '暂停' }
