@@ -84,7 +84,7 @@ exports.getProducts = function(page, per_page, query) {
   let skip = (page-1) * per_page;
   return Product.find(query)
     .sort({
-      updateTime: -1
+      _id: -1
     })
     .skip(skip)
     .limit(per_page)
